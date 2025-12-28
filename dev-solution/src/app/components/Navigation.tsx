@@ -13,6 +13,15 @@ export function Navigation() {
     { label: 'Contacto', href: '#contacto' },
   ];
 
+  const scrollToContact = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const contactSection = document.getElementById('contacto');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    setIsOpen(false); // Cerrar el menú móvil si está abierto
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -48,9 +57,15 @@ export function Navigation() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              <Button className="bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white shadow-lg shadow-cyan-500/30">
-                Comenzar Proyecto
-              </Button>
+              <a
+                href="#contacto"
+                onClick={scrollToContact}
+                className="inline-block"
+              >
+                <Button className="bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white shadow-lg shadow-cyan-500/30">
+                  Comenzar Proyecto
+                </Button>
+              </a>
             </motion.div>
           </div>
 
@@ -84,9 +99,15 @@ export function Navigation() {
                   {item.label}
                 </a>
               ))}
-              <Button className="w-full bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white mt-4">
-                Comenzar Proyecto
-              </Button>
+              <a
+                href="#contacto"
+                onClick={scrollToContact}
+                className="block w-full"
+              >
+                <Button className="w-full bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white mt-4">
+                  Comenzar Proyecto
+                </Button>
+              </a>
             </div>
           </motion.div>
         )}
