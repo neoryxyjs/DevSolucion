@@ -216,11 +216,10 @@ export function CTA() {
               console.log('Form values:', watch());
             })} className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm mb-2 text-gray-700">
+                <label className="block text-sm mb-2 text-gray-700">
                   Nombre Completo <span className="text-red-500">*</span>
                 </label>
                 <Input
-                  id="name"
                   placeholder="Tu nombre"
                   className={`w-full ${errors.name ? 'border-red-500' : ''}`}
                   {...register('name', { 
@@ -237,11 +236,10 @@ export function CTA() {
               </div>
               
               <div>
-                <label htmlFor="email" className="block text-sm mb-2 text-gray-700">
+                <label className="block text-sm mb-2 text-gray-700">
                   Email <span className="text-red-500">*</span>
                 </label>
                 <Input
-                  id="email"
                   type="email"
                   placeholder="tu@email.com"
                   className={`w-full ${errors.email ? 'border-red-500' : ''}`}
@@ -259,11 +257,10 @@ export function CTA() {
               </div>
               
               <div>
-                <label htmlFor="phone" className="block text-sm mb-2 text-gray-700">
+                <label className="block text-sm mb-2 text-gray-700">
                   Teléfono
                 </label>
                 <Input
-                  id="phone"
                   type="tel"
                   placeholder="+569 000 000 000"
                   className="w-full"
@@ -272,11 +269,10 @@ export function CTA() {
               </div>
               
               <div>
-                <label htmlFor="project" className="block text-sm mb-2 text-gray-700">
+                <label className="block text-sm mb-2 text-gray-700">
                   Cuéntanos sobre tu proyecto <span className="text-red-500">*</span>
                 </label>
                 <Textarea
-                  id="project"
                   placeholder="Describe brevemente tu idea o proyecto..."
                   rows={4}
                   className={`w-full ${errors.project ? 'border-red-500' : ''}`}
