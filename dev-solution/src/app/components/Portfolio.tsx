@@ -22,10 +22,10 @@ const projects = [
     color: 'border-l-teal-500',
   },
   {
-    title: 'Plataforma de Reservas',
-    description: 'Sistema de reservas online con calendario interactivo, pagos automáticos y notificaciones. Integrado con WhatsApp API y Mercado Pago.',
-    image: 'https://images.unsplash.com/photo-1557324232-b8917d3c3dcb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWIlMjBkZXZlbG9wbWVudCUyMGNvZGluZ3xlbnwxfHx8fDE3NjYyMzUyMTF8MA&ixlib=rb-4.1.0&q=80&w=1080',
-    tags: ['SaaS', 'API', 'React', 'MongoDB'],
+    title: 'Solución de Salud',
+    description: 'Plataforma dedicada a orientar clientes en la selección de isapres con CRM interno avanzado. Sistema completo con estadísticas en tiempo real, generación automática de reportes Excel desde bases de datos y gestión de leads con seguimiento completo.',
+    image: '/portfolio/soluciondesalud.png',
+    tags: ['Web App', 'CRM', 'Dashboard', 'React', 'Node.js', 'PostgreSQL', 'Excel Export', 'Analytics', 'Leads Management'],
     color: 'border-l-emerald-500',
   },
   {
