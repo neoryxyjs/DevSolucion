@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -25,10 +25,35 @@ export function CTA() {
     formState: { errors },
     reset,
     clearErrors,
+    watch,
   } = useForm<FormData>({
-    mode: 'onSubmit', // Solo validar cuando se intenta enviar
-    reValidateMode: 'onChange', // Re-validar cuando cambian los valores después del primer submit
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
   });
+
+  // Observar cambios en los campos para limpiar errores
+  const nameValue = watch('name');
+  const emailValue = watch('email');
+  const projectValue = watch('project');
+
+  // Limpiar errores cuando los valores son válidos
+  useEffect(() => {
+    if (nameValue && nameValue.trim().length >= 2 && errors.name) {
+      clearErrors('name');
+    }
+  }, [nameValue, errors.name, clearErrors]);
+
+  useEffect(() => {
+    if (emailValue && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(emailValue) && errors.email) {
+      clearErrors('email');
+    }
+  }, [emailValue, errors.email, clearErrors]);
+
+  useEffect(() => {
+    if (projectValue && projectValue.trim().length >= 10 && errors.project) {
+      clearErrors('project');
+    }
+  }, [projectValue, errors.project, clearErrors]);
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
@@ -225,12 +250,6 @@ export function CTA() {
                       message: 'El nombre debe tener al menos 2 caracteres'
                     }
                   })}
-                  onChange={(e) => {
-                    register('name').onChange(e);
-                    if (errors.name && e.target.value.trim().length >= 2) {
-                      clearErrors('name');
-                    }
-                  }}
                 />
                 {errors.name && (
                   <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
@@ -253,13 +272,6 @@ export function CTA() {
                       message: 'Email inválido'
                     }
                   })}
-                  onChange={(e) => {
-                    register('email').onChange(e);
-                    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-                    if (errors.email && e.target.value && emailPattern.test(e.target.value)) {
-                      clearErrors('email');
-                    }
-                  }}
                 />
                 {errors.email && (
                   <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
@@ -295,12 +307,6 @@ export function CTA() {
                       message: 'La descripción debe tener al menos 10 caracteres'
                     }
                   })}
-                  onChange={(e) => {
-                    register('project').onChange(e);
-                    if (errors.project && e.target.value.trim().length >= 10) {
-                      clearErrors('project');
-                    }
-                  }}
                 />
                 {errors.project && (
                   <p className="text-red-500 text-xs mt-1">{errors.project.message}</p>
