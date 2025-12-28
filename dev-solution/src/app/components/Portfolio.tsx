@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { ExternalLink } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { Card } from './ui/card';
 import { Badge } from './ui/badge';
@@ -7,14 +8,15 @@ const projects = [
   {
     title: 'E-commerce Corum Fragancias',
     description: 'Tienda online de perfumes con más de 10,000 productos, carrito de compras avanzado y sistema de recomendaciones.',
-    image: 'https://images.unsplash.com/photo-1658297063569-162817482fb6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlY29tbWVyY2UlMjBzaG9wcGluZyUyMG9ubGluZXxlbnwxfHx8fDE3NjYzMTIzMjV8MA&ixlib=rb-4.1.0&q=80&w=1080',
+    image: 'https://image.thum.io/get/width/1200/crop/800/https://www.corumfragancias.cl/',
+    link: 'https://www.corumfragancias.cl/',
     tags: ['E-commerce', 'React', 'Node.js', 'GetNet', 'Tailwind CSS', 'PostgreSQL'],
     color: 'border-l-cyan-500',
   },
   {
     title: 'App de Gestión de Agenda de Citas',
     description: 'Sistema completo de gestión de agenda de citas con dashboard, reportes en tiempo real y módulos de facturación.',
-    image: 'https://images.unsplash.com/photo-1718220216044-006f43e3a9b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBvZmZpY2UlMjB3b3Jrc3BhY2V8ZW58MXx8fHwxNzY2Mjk2OTk0fDA&ixlib=rb-4.1.0&q=80&w=1080',
+    image: '/portfolio/minegocio-dashboard.png',
     tags: ['Web App', 'Dashboard', 'TypeScript', 'PostgreSQL', 'React Native', 'WhatsApp API', 'Mercado Pago'],
     color: 'border-l-teal-500',
   },
@@ -62,7 +64,10 @@ export function Portfolio() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className={`overflow-hidden hover:shadow-2xl transition-all duration-300 border-l-4 ${project.color} group cursor-pointer`}>
+              <Card 
+                className={`overflow-hidden hover:shadow-2xl transition-all duration-300 border-l-4 ${project.color} group cursor-pointer`}
+                onClick={() => project.link && window.open(project.link, '_blank', 'noopener,noreferrer')}
+              >
                 <div className="relative h-64 overflow-hidden">
                   <motion.div
                     whileHover={{ scale: 1.1 }}
@@ -78,9 +83,14 @@ export function Portfolio() {
                 </div>
                 
                 <div className="p-6">
-                  <h3 className="text-2xl mb-3 text-gray-900 group-hover:text-teal-600 transition-colors">
-                    {project.title}
-                  </h3>
+                  <div className="flex items-center gap-2 mb-3">
+                    <h3 className="text-2xl text-gray-900 group-hover:text-teal-600 transition-colors">
+                      {project.title}
+                    </h3>
+                    {project.link && (
+                      <ExternalLink className="h-5 w-5 text-gray-400 group-hover:text-teal-600 transition-colors" />
+                    )}
+                  </div>
                   <p className="text-gray-600 mb-4 leading-relaxed">
                     {project.description}
                   </p>
