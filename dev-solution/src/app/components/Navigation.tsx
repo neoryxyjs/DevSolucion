@@ -9,6 +9,7 @@ export function Navigation() {
   const navItems = [
     { label: 'Inicio', href: '#', id: '' },
     { label: 'Servicios', href: '#servicios', id: 'servicios' },
+    { label: 'Sobre Nosotros', href: '#sobre-nosotros', id: 'sobre-nosotros' },
     { label: 'Portafolio', href: '#portfolio', id: 'portfolio' },
     { label: 'Contacto', href: '#contacto', id: 'contacto' },
   ];
@@ -70,6 +71,7 @@ export function Navigation() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 className="text-gray-300 hover:text-white transition-colors relative group"
+                aria-label={`Navegar a ${item.label}`}
               >
                 {item.label}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-cyan-400 transition-all group-hover:w-full"></span>
@@ -136,6 +138,7 @@ export function Navigation() {
                     href={item.href}
                     onClick={(e) => scrollToSection(e, item.id)}
                     className="block text-gray-300 hover:text-white hover:bg-slate-700/50 transition-all rounded-lg px-4 py-3 text-lg font-medium touch-manipulation active:bg-slate-700"
+                    aria-label={`Navegar a ${item.label}`}
                   >
                     {item.label}
                   </a>

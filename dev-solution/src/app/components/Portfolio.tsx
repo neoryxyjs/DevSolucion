@@ -25,6 +25,7 @@ const projects = [
     title: 'Solución de Salud',
     description: 'Plataforma dedicada a orientar clientes en la selección de isapres con CRM interno avanzado. Sistema completo con estadísticas en tiempo real, generación automática de reportes Excel desde bases de datos y gestión de leads con seguimiento completo.',
     image: '/portfolio/soluciondesalud.png',
+    link: '',
     tags: ['Web App', 'CRM', 'Dashboard', 'React', 'Node.js', 'PostgreSQL', 'Excel Export', 'Analytics', 'Leads Management'],
     color: 'border-l-emerald-500',
   },
@@ -41,7 +42,11 @@ export function Portfolio() {
   const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
 
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-50 to-white" id="portfolio">
+    <section 
+      className="py-24 bg-gradient-to-b from-gray-50 to-white" 
+      id="portfolio"
+      aria-label="Portafolio de proyectos"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

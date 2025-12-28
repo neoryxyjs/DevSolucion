@@ -43,7 +43,7 @@ const services = [
 
 export function Services() {
   return (
-    <section className="py-24 bg-white" id="servicios">
+    <section className="py-24 bg-white" id="servicios" aria-label="Nuestros servicios">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

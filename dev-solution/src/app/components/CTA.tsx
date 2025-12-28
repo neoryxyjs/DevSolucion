@@ -101,7 +101,11 @@ export function CTA() {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-br from-cyan-600 via-teal-600 to-emerald-600 relative overflow-hidden" id="contacto">
+    <section 
+      className="py-24 bg-gradient-to-br from-cyan-600 via-teal-600 to-emerald-600 relative overflow-hidden" 
+      id="contacto"
+      aria-label="Formulario de contacto"
+    >
       {/* Animated background patterns */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-0 w-full h-full">

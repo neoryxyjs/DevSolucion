@@ -67,7 +67,10 @@ export function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-cyan-950 to-slate-900">
+    <section 
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-cyan-950 to-slate-900"
+      aria-label="Sección principal - Hero"
+    >
       {/* Animated background elements - Enhanced with more particles */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Grid pattern overlay */}
@@ -169,8 +172,13 @@ export function Hero() {
         ))}
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* Content with parallax effect */}
+      <motion.div 
+        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      >
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -246,9 +254,9 @@ export function Hero() {
             { number: 99, suffix: '%', label: 'Tasa de Éxito' },
           ].map((stat, index) => (
             <AnimatedCounter key={index} value={stat.number} suffix={stat.suffix} label={stat.label} delay={index * 0.2} />
-          ))}
+            ))} 
+          </motion.div>
         </motion.div>
-      </div>
 
       {/* Scroll indicator */}
       <motion.div
