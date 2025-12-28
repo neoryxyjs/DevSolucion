@@ -17,13 +17,16 @@ interface FormData {
 export function CTA() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    mode: 'onBlur', // Validar cuando el usuario sale del campo, no mientras escribe
+  });
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
@@ -31,18 +34,31 @@ export function CTA() {
 
     try {
       // Configuración de EmailJS
-      // IMPORTANTE: Necesitas configurar estas variables de entorno o reemplazarlas con tus credenciales
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'YOUR_SERVICE_ID';
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'YOUR_TEMPLATE_ID';
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'YOUR_PUBLIC_KEY';
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_rm2ciqp';
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_rzm0exk';
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'lPZndZfWBBmeIUSrK';
+
+      // Verificar que las credenciales estén configuradas
+      if (!serviceId || serviceId === 'YOUR_SERVICE_ID' || 
+          !templateId || templateId === 'YOUR_TEMPLATE_ID' || 
+          !publicKey || publicKey === 'YOUR_PUBLIC_KEY') {
+        throw new Error('Las credenciales de EmailJS no están configuradas. Por favor, configura las variables de entorno.');
+      }
 
       // Template parameters para EmailJS
+      // Estos nombres deben coincidir exactamente con las variables del template
       const templateParams = {
+        // Para el Subject: "Contact Us: {{title}}"
+        title: data.name,
+        // Para el From Name: {{name}}
+        name: data.name,
+        // Para el Reply To: {{email}}
+        email: data.email,
+        // Para el contenido del email (mantenemos los originales también)
         from_name: data.name,
         from_email: data.email,
-        phone: data.phone,
+        phone: data.phone || 'No proporcionado',
         message: data.project,
-        to_email: 'devsolutionchile@gmail.com', // Tu correo de destino
       };
 
       await emailjs.send(serviceId, templateId, templateParams, publicKey);
@@ -54,14 +70,28 @@ export function CTA() {
       setTimeout(() => {
         setSubmitStatus('idle');
       }, 5000);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error enviando el correo:', error);
+      
+      // Mensaje de error más específico
+      let errorMsg = 'Hubo un error al enviar el mensaje. Por favor, intenta nuevamente o escríbenos directamente.';
+      
+      if (error?.text) {
+        errorMsg = `Error: ${error.text}`;
+      } else if (error?.message) {
+        errorMsg = error.message;
+      } else if (error?.status) {
+        errorMsg = `Error ${error.status}: No se pudo enviar el correo. Verifica tu configuración de EmailJS.`;
+      }
+      
+      setErrorMessage(errorMsg);
       setSubmitStatus('error');
       
-      // Resetear el mensaje de error después de 5 segundos
+      // Resetear el mensaje de error después de 7 segundos
       setTimeout(() => {
         setSubmitStatus('idle');
-      }, 5000);
+        setErrorMessage('');
+      }, 7000);
     } finally {
       setIsSubmitting(false);
     }
@@ -162,12 +192,17 @@ export function CTA() {
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-red-700"
+                className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-2 text-red-700"
               >
-                <AlertCircle className="h-5 w-5" />
-                <span className="text-sm font-medium">
-                  Hubo un error al enviar el mensaje. Por favor, intenta nuevamente o escríbenos directamente.
-                </span>
+                <AlertCircle className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium mb-1">
+                    Error al enviar el mensaje
+                  </p>
+                  <p className="text-xs text-red-600">
+                    {errorMessage || 'Por favor, verifica que las credenciales de EmailJS estén configuradas correctamente o escríbenos directamente a devsolutionchile@gmail.com'}
+                  </p>
+                </div>
               </motion.div>
             )}
 
