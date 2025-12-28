@@ -1,4 +1,4 @@
-import { Code } from 'lucide-react';
+import { Code, Instagram, Mail, Phone } from 'lucide-react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -39,8 +39,9 @@ export function Footer() {
               <li>
                 <a 
                   href="mailto:devsolutionchile@gmail.com" 
-                  className="hover:text-cyan-400 transition-colors"
+                  className="hover:text-cyan-400 transition-colors flex items-center gap-2"
                 >
+                  <Mail className="h-4 w-4" />
                   devsolutionchile@gmail.com
                 </a>
               </li>
@@ -49,13 +50,30 @@ export function Footer() {
                   href="https://wa.me/56949238082" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-cyan-400 transition-colors"
+                  className="hover:text-cyan-400 transition-colors flex items-center gap-2"
                 >
+                  <Phone className="h-4 w-4" />
                   +569 4923 8082
                 </a>
               </li>
               <li>Santiago, Chile</li>
             </ul>
+            
+            {/* Social Media */}
+            <div className="mt-6">
+              <h4 className="text-white mb-4">Síguenos</h4>
+              <div className="flex gap-4">
+                <a
+                  href="https://www.instagram.com/solution_devs/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center hover:scale-110 transition-transform shadow-lg hover:shadow-purple-500/50"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="h-5 w-5 text-white" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 

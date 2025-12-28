@@ -69,19 +69,19 @@ export function Services() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="p-8 h-full hover:shadow-2xl transition-shadow duration-300 border-0 bg-gradient-to-br from-white to-gray-50 group cursor-pointer">
+              <Card className="p-8 h-full hover:shadow-2xl transition-all duration-300 border-0 bg-gradient-to-br from-white to-gray-50 group cursor-pointer hover:scale-105 hover:-translate-y-2">
                 <motion.div
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                  className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6 group-hover:shadow-lg`}
+                  whileHover={{ scale: 1.15, rotate: 10 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6 group-hover:shadow-xl group-hover:shadow-cyan-500/50`}
                 >
                   <service.icon className="h-8 w-8 text-white" />
                 </motion.div>
 
-                <h3 className="text-2xl mb-4 text-gray-900 group-hover:text-cyan-600 transition-colors">
+                <h3 className="text-2xl mb-4 text-gray-900 group-hover:text-cyan-600 transition-colors font-semibold">
                   {service.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors">
                   {service.description}
                 </p>
               </Card>

@@ -1,6 +1,54 @@
-import { motion } from 'motion/react';
+import { motion, useMotionValue, useSpring } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from './ui/button';
+import { useEffect, useRef, useState } from 'react';
+
+// Componente para contador animado
+function AnimatedCounter({ value, suffix, label, delay = 0 }: { value: number; suffix: string; label: string; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const motionValue = useMotionValue(0);
+  const springValue = useSpring(motionValue, {
+    damping: 60,
+    stiffness: 100,
+  });
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isInView) {
+          setIsInView(true);
+          setTimeout(() => {
+            motionValue.set(value);
+          }, delay * 1000);
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [value, motionValue, isInView, delay]);
+
+  useEffect(() => {
+    const unsubscribe = springValue.on('change', (latest) => {
+      if (ref.current) {
+        ref.current.textContent = Math.floor(latest) + suffix;
+      }
+    });
+    return () => unsubscribe();
+  }, [springValue, suffix]);
+
+  return (
+    <div className="text-center">
+      <div ref={ref} className="text-4xl font-bold text-white mb-2">0{suffix}</div>
+      <div className="text-sm text-gray-200 font-medium">{label}</div>
+    </div>
+  );
+}
 
 export function Hero() {
   const scrollToSection = (sectionId: string) => {
@@ -185,7 +233,7 @@ export function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Stats */}
+        {/* Stats with animated counters */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -193,14 +241,11 @@ export function Hero() {
           className="mt-24 grid grid-cols-3 gap-8 max-w-3xl mx-auto"
         >
           {[
-            { number: '50+', label: 'Proyectos Completados' },
-            { number: '40+', label: 'Clientes Satisfechos' },
-            { number: '99%', label: 'Tasa de Éxito' },
+            { number: 50, suffix: '+', label: 'Proyectos Completados' },
+            { number: 40, suffix: '+', label: 'Clientes Satisfechos' },
+            { number: 99, suffix: '%', label: 'Tasa de Éxito' },
           ].map((stat, index) => (
-            <div key={index} className="text-center">
-              <div className="text-4xl font-bold text-white mb-2">{stat.number}</div>
-              <div className="text-sm text-gray-200 font-medium">{stat.label}</div>
-            </div>
+            <AnimatedCounter key={index} value={stat.number} suffix={stat.suffix} label={stat.label} delay={index * 0.2} />
           ))}
         </motion.div>
       </div>

@@ -55,19 +55,20 @@ export function Features() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="flex gap-4 group"
+              className="flex gap-4 group p-4 rounded-lg hover:bg-slate-800/50 transition-colors"
             >
               <motion.div
-                whileHover={{ scale: 1.2, rotate: 360 }}
-                transition={{ duration: 0.5 }}
+                whileHover={{ scale: 1.3, rotate: 360 }}
+                transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                className="flex-shrink-0"
               >
-                <CircleCheck className="h-6 w-6 text-green-400 flex-shrink-0 mt-1" />
+                <CircleCheck className="h-6 w-6 text-green-400 mt-1" />
               </motion.div>
               <div>
-                <h3 className="text-xl mb-2 group-hover:text-cyan-400 transition-colors">
+                <h3 className="text-xl mb-2 group-hover:text-cyan-400 transition-colors font-semibold">
                   {feature.title}
                 </h3>
-                <p className="text-gray-400 leading-relaxed">
+                <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
                   {feature.description}
                 </p>
               </div>
