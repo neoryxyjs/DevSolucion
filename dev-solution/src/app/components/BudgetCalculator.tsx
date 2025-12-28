@@ -4,27 +4,27 @@ import { Calculator, DollarSign } from 'lucide-react';
 import { Card } from './ui/card';
 import { Button } from './ui/button';
 
-type ProjectType = 'ecommerce' | 'webapp' | 'mobile' | 'custom';
+type ProjectType = 'frontend' | 'fullstack' | 'ecommerce' | 'mobile';
 type Complexity = 'simple' | 'medium' | 'complex';
 
 const projectTypes = {
-  ecommerce: { name: 'E-commerce', base: 1500, multiplier: 1.2 },
-  webapp: { name: 'Aplicación Web', base: 2000, multiplier: 1.5 },
-  mobile: { name: 'App Móvil', base: 2500, multiplier: 1.8 },
-  custom: { name: 'Solución Personalizada', base: 3000, multiplier: 2.0 },
+  frontend: { name: 'Solo Frontend', base: 200000, min: 200000, max: 200000 },
+  fullstack: { name: 'Full Stack (Frontend + Backend + BD)', base: 250000, min: 250000, max: 400000 },
+  ecommerce: { name: 'E-commerce Completo', base: 250000, min: 250000, max: 400000 },
+  mobile: { name: 'App Móvil', base: 250000, min: 250000, max: 400000 },
 };
 
 const complexityMultipliers = {
-  simple: 1.0,
-  medium: 1.5,
-  complex: 2.5,
+  simple: { min: 1.0, max: 1.0 },
+  medium: { min: 1.2, max: 1.5 },
+  complex: { min: 1.5, max: 2.0 },
 };
 
 export function BudgetCalculator() {
   const [projectType, setProjectType] = useState<ProjectType | ''>('');
   const [complexity, setComplexity] = useState<Complexity | ''>('');
   const [features, setFeatures] = useState<string[]>([]);
-  const [estimatedBudget, setEstimatedBudget] = useState<number | null>(null);
+  const [estimatedBudget, setEstimatedBudget] = useState<{ min: number; max: number } | null>(null);
 
   const featureOptions = [
     'Dashboard/Analytics',
@@ -35,6 +35,7 @@ export function BudgetCalculator() {
     'Integración con APIs',
     'Multi-idioma',
     'Panel de Administración',
+    'Base de Datos',
   ];
 
   const toggleFeature = (feature: string) => {
@@ -50,12 +51,31 @@ export function BudgetCalculator() {
 
     const project = projectTypes[projectType];
     const complexityMult = complexityMultipliers[complexity];
-    const featuresMult = 1 + (features.length * 0.15);
     
-    const baseBudget = project.base * complexityMult * featuresMult;
-    const finalBudget = baseBudget * project.multiplier;
+    // Si es solo frontend, precio fijo
+    if (projectType === 'frontend') {
+      setEstimatedBudget({ min: 200000, max: 200000 });
+      return;
+    }
+
+    // Si necesita base de datos, mínimo 250.000
+    const hasDatabase = features.includes('Base de Datos');
     
-    setEstimatedBudget(Math.round(finalBudget));
+    // Si el proyecto ya incluye BD (fullstack, ecommerce, mobile), o si seleccionaron BD como característica
+    // el mínimo es 250.000
+    const baseMin = hasDatabase || projectType !== 'frontend' ? 250000 : project.min;
+    const baseMax = 400000;
+
+    // Cálculo con rango según complejidad
+    const featuresMult = 1 + ((features.length - (hasDatabase ? 1 : 0)) * 0.05);
+    const minBudget = Math.round(baseMin * complexityMult.min * featuresMult);
+    const maxBudget = Math.round(baseMax * complexityMult.max * featuresMult);
+    
+    // Asegurar que no exceda el máximo
+    setEstimatedBudget({ 
+      min: Math.min(minBudget, 400000), 
+      max: Math.min(maxBudget, 400000) 
+    });
   };
 
   return (
@@ -175,9 +195,20 @@ export function BudgetCalculator() {
                     <p className="text-gray-600">Aproximación basada en tus selecciones</p>
                   </div>
                 </div>
-                <div className="text-5xl font-bold text-cyan-600 mb-4">
-                  ${estimatedBudget.toLocaleString('es-CL')} CLP
-                </div>
+                {estimatedBudget.min === estimatedBudget.max ? (
+                  <div className="text-5xl font-bold text-cyan-600 mb-4">
+                    ${estimatedBudget.min.toLocaleString('es-CL')} CLP
+                  </div>
+                ) : (
+                  <div className="mb-4">
+                    <div className="text-4xl font-bold text-cyan-600">
+                      ${estimatedBudget.min.toLocaleString('es-CL')} - ${estimatedBudget.max.toLocaleString('es-CL')} CLP
+                    </div>
+                    <p className="text-sm text-gray-600 mt-2">
+                      Rango estimado según la complejidad del proyecto
+                    </p>
+                  </div>
+                )}
                 <p className="text-sm text-gray-600">
                   * Este es un presupuesto estimado. Para una cotización precisa, contáctanos y analizaremos tu proyecto en detalle.
                 </p>
