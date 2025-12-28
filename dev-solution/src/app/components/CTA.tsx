@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -27,35 +27,12 @@ export function CTA() {
     clearErrors,
     watch,
   } = useForm<FormData>({
-    mode: 'onSubmit',
+    mode: 'onBlur',
     reValidateMode: 'onChange',
   });
 
-  // Observar cambios en los campos para limpiar errores
-  const nameValue = watch('name');
-  const emailValue = watch('email');
-  const projectValue = watch('project');
-
-  // Limpiar errores cuando los valores son válidos
-  useEffect(() => {
-    if (nameValue && nameValue.trim().length >= 2 && errors.name) {
-      clearErrors('name');
-    }
-  }, [nameValue, errors.name, clearErrors]);
-
-  useEffect(() => {
-    if (emailValue && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(emailValue) && errors.email) {
-      clearErrors('email');
-    }
-  }, [emailValue, errors.email, clearErrors]);
-
-  useEffect(() => {
-    if (projectValue && projectValue.trim().length >= 10 && errors.project) {
-      clearErrors('project');
-    }
-  }, [projectValue, errors.project, clearErrors]);
-
   const onSubmit = async (data: FormData) => {
+    console.log('Form submitted with data:', data);
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
@@ -234,7 +211,10 @@ export function CTA() {
               </motion.div>
             )}
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={handleSubmit(onSubmit, (errors) => {
+              console.log('Form validation errors:', errors);
+              console.log('Form values:', watch());
+            })} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm mb-2 text-gray-700">
                   Nombre Completo <span className="text-red-500">*</span>
