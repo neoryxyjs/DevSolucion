@@ -67,10 +67,10 @@ export function Footer() {
                   href="https://www.instagram.com/solution_devs/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center hover:scale-110 transition-transform shadow-lg hover:shadow-purple-500/50"
+                  className="w-8 h-8 text-gray-400 hover:text-cyan-400 transition-colors flex items-center justify-center"
                   aria-label="Instagram"
                 >
-                  <Instagram className="h-5 w-5 text-white" />
+                  <Instagram className="h-5 w-5" />
                 </a>
               </div>
             </div>
