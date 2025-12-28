@@ -8,7 +8,7 @@ const projects = [
   {
     title: 'E-commerce Corum Fragancias',
     description: 'Tienda online de perfumes con más de 10,000 productos, carrito de compras avanzado y sistema de recomendaciones.',
-    image: '/portfolio/corumfragancias.png',
+    image: '/portfolio/corum-fragancias.png',
     link: 'https://www.corumfragancias.cl/',
     tags: ['E-commerce', 'React', 'Node.js', 'GetNet', 'Tailwind CSS', 'PostgreSQL'],
     color: 'border-l-cyan-500',
