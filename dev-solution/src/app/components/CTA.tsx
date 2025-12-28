@@ -32,7 +32,6 @@ export function CTA() {
   });
 
   const onSubmit = async (data: FormData) => {
-    console.log('Form submitted with data:', data);
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
@@ -76,7 +75,6 @@ export function CTA() {
         setSubmitStatus('idle');
       }, 5000);
     } catch (error: any) {
-      console.error('Error enviando el correo:', error);
       
       // Mensaje de error más específico
       let errorMsg = 'Hubo un error al enviar el mensaje. Por favor, intenta nuevamente o escríbenos directamente.';
@@ -211,10 +209,7 @@ export function CTA() {
               </motion.div>
             )}
 
-            <form onSubmit={handleSubmit(onSubmit, (errors) => {
-              console.log('Form validation errors:', errors);
-              console.log('Form values:', watch());
-            })} className="space-y-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
                 <label className="block text-sm mb-2 text-gray-700">
                   Nombre Completo <span className="text-red-500">*</span>

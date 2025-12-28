@@ -3,6 +3,13 @@ import { ArrowRight } from 'lucide-react';
 import { Button } from './ui/button';
 
 export function Hero() {
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-cyan-950 to-slate-900">
       {/* Animated background elements */}
@@ -95,6 +102,7 @@ export function Hero() {
           >
             <Button
               size="lg"
+              onClick={() => scrollToSection('portfolio')}
               className="bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white px-8 py-6 group shadow-lg shadow-cyan-500/50"
             >
               Ver Proyectos
@@ -103,6 +111,7 @@ export function Hero() {
             <Button
               size="lg"
               variant="outline"
+              onClick={() => scrollToSection('contacto')}
               className="border-2 border-cyan-400 text-cyan-200 hover:bg-cyan-500/20 px-8 py-6"
             >
               Contactar
