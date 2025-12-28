@@ -1,10 +1,72 @@
+import { useState } from 'react';
 import { motion } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import emailjs from '@emailjs/browser';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+  project: string;
+}
+
 export function CTA() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormData>();
+
+  const onSubmit = async (data: FormData) => {
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      // Configuración de EmailJS
+      // IMPORTANTE: Necesitas configurar estas variables de entorno o reemplazarlas con tus credenciales
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'YOUR_SERVICE_ID';
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'YOUR_TEMPLATE_ID';
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'YOUR_PUBLIC_KEY';
+
+      // Template parameters para EmailJS
+      const templateParams = {
+        from_name: data.name,
+        from_email: data.email,
+        phone: data.phone,
+        message: data.project,
+        to_email: 'devsolutionchile@gmail.com', // Tu correo de destino
+      };
+
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+      setSubmitStatus('success');
+      reset(); // Limpiar el formulario
+      
+      // Resetear el mensaje de éxito después de 5 segundos
+      setTimeout(() => {
+        setSubmitStatus('idle');
+      }, 5000);
+    } catch (error) {
+      console.error('Error enviando el correo:', error);
+      setSubmitStatus('error');
+      
+      // Resetear el mensaje de error después de 5 segundos
+      setTimeout(() => {
+        setSubmitStatus('idle');
+      }, 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section className="py-24 bg-gradient-to-br from-cyan-600 via-teal-600 to-emerald-600 relative overflow-hidden" id="contacto">
       {/* Animated background patterns */}
@@ -81,28 +143,76 @@ export function CTA() {
             <h3 className="text-2xl mb-6 text-gray-900">
               Solicita tu Consulta Gratuita
             </h3>
-            <form className="space-y-4">
+            
+            {/* Mensajes de estado */}
+            {submitStatus === 'success' && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2 text-green-700"
+              >
+                <CheckCircle2 className="h-5 w-5" />
+                <span className="text-sm font-medium">
+                  ¡Mensaje enviado exitosamente! Te contactaremos pronto.
+                </span>
+              </motion.div>
+            )}
+
+            {submitStatus === 'error' && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-red-700"
+              >
+                <AlertCircle className="h-5 w-5" />
+                <span className="text-sm font-medium">
+                  Hubo un error al enviar el mensaje. Por favor, intenta nuevamente o escríbenos directamente.
+                </span>
+              </motion.div>
+            )}
+
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm mb-2 text-gray-700">
-                  Nombre Completo
+                  Nombre Completo <span className="text-red-500">*</span>
                 </label>
                 <Input
                   id="name"
                   placeholder="Tu nombre"
-                  className="w-full"
+                  className={`w-full ${errors.name ? 'border-red-500' : ''}`}
+                  {...register('name', { 
+                    required: 'El nombre es requerido',
+                    minLength: {
+                      value: 2,
+                      message: 'El nombre debe tener al menos 2 caracteres'
+                    }
+                  })}
                 />
+                {errors.name && (
+                  <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+                )}
               </div>
               
               <div>
                 <label htmlFor="email" className="block text-sm mb-2 text-gray-700">
-                  Email
+                  Email <span className="text-red-500">*</span>
                 </label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="tu@email.com"
-                  className="w-full"
+                  className={`w-full ${errors.email ? 'border-red-500' : ''}`}
+                  {...register('email', { 
+                    required: 'El email es requerido',
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: 'Email inválido'
+                    }
+                  })}
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+                )}
               </div>
               
               <div>
@@ -114,32 +224,53 @@ export function CTA() {
                   type="tel"
                   placeholder="+569 000 000 000"
                   className="w-full"
+                  {...register('phone')}
                 />
               </div>
               
               <div>
                 <label htmlFor="project" className="block text-sm mb-2 text-gray-700">
-                  Cuéntanos sobre tu proyecto
+                  Cuéntanos sobre tu proyecto <span className="text-red-500">*</span>
                 </label>
                 <Textarea
                   id="project"
                   placeholder="Describe brevemente tu idea o proyecto..."
                   rows={4}
-                  className="w-full"
+                  className={`w-full ${errors.project ? 'border-red-500' : ''}`}
+                  {...register('project', { 
+                    required: 'Por favor, describe tu proyecto',
+                    minLength: {
+                      value: 10,
+                      message: 'La descripción debe tener al menos 10 caracteres'
+                    }
+                  })}
                 />
+                {errors.project && (
+                  <p className="text-red-500 text-xs mt-1">{errors.project.message}</p>
+                )}
               </div>
               
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-slate-900 to-slate-800 hover:from-slate-800 hover:to-slate-700 text-white py-6 group shadow-lg"
+                disabled={isSubmitting}
+                className="w-full bg-gradient-to-r from-slate-900 to-slate-800 hover:from-slate-800 hover:to-slate-700 text-white py-6 group shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Enviar Solicitud
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    Enviando...
+                  </>
+                ) : (
+                  <>
+                    Enviar Solicitud
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
               </Button>
             </form>
             
             <p className="text-sm text-gray-500 mt-4 text-center">
-              También puedes escribirnos a <span className="text-cyan-600">contacto@devsolution.com</span>
+              También puedes escribirnos a <span className="text-cyan-600">devsolutionchile@gmail.com</span>
             </p>
           </motion.div>
         </div>
