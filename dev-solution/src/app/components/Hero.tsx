@@ -68,18 +68,18 @@ export function Hero() {
             transition={{ delay: 0.2, duration: 0.6 }}
             className="inline-block mb-6 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-teal-500/20 border border-cyan-400/40 backdrop-blur-sm"
           >
-            <span className="text-cyan-200">✨ Soluciones de Software Personalizadas</span>
+            <span className="text-white font-medium">✨ Soluciones de Software Personalizadas</span>
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="text-5xl sm:text-6xl lg:text-7xl mb-6 text-white"
+            className="text-5xl sm:text-6xl lg:text-7xl mb-6 text-white font-bold"
           >
             Transformamos tus ideas
             <br />
-            <span className="bg-gradient-to-r from-cyan-400 via-teal-400 to-orange-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-cyan-300 via-teal-300 to-orange-300 bg-clip-text text-transparent drop-shadow-lg">
               en soluciones digitales
             </span>
           </motion.h1>
@@ -88,7 +88,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto"
+            className="text-xl text-gray-100 mb-12 max-w-3xl mx-auto leading-relaxed"
           >
             Desarrollamos e-commerce, aplicaciones web y móviles con tecnología de vanguardia.
             Tu éxito digital comienza aquí.
@@ -112,7 +112,7 @@ export function Hero() {
               size="lg"
               variant="outline"
               onClick={() => scrollToSection('contacto')}
-              className="border-2 border-cyan-400 text-cyan-200 hover:bg-cyan-500/20 px-8 py-6"
+              className="border-2 border-cyan-400 text-white hover:bg-cyan-500/20 hover:border-cyan-300 px-8 py-6 backdrop-blur-sm bg-white/5"
             >
               Contactar
             </Button>
@@ -132,8 +132,8 @@ export function Hero() {
             { number: '99%', label: 'Tasa de Éxito' },
           ].map((stat, index) => (
             <div key={index} className="text-center">
-              <div className="text-4xl text-white mb-2">{stat.number}</div>
-              <div className="text-sm text-gray-400">{stat.label}</div>
+              <div className="text-4xl font-bold text-white mb-2">{stat.number}</div>
+              <div className="text-sm text-gray-200 font-medium">{stat.label}</div>
             </div>
           ))}
         </motion.div>
