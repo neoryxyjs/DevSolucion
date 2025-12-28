@@ -24,8 +24,10 @@ export function CTA() {
     handleSubmit,
     formState: { errors },
     reset,
+    clearErrors,
   } = useForm<FormData>({
-    mode: 'onBlur', // Validar cuando el usuario sale del campo, no mientras escribe
+    mode: 'onSubmit', // Solo validar cuando se intenta enviar
+    reValidateMode: 'onChange', // Re-validar cuando cambian los valores después del primer submit
   });
 
   const onSubmit = async (data: FormData) => {
@@ -64,6 +66,7 @@ export function CTA() {
       await emailjs.send(serviceId, templateId, templateParams, publicKey);
 
       setSubmitStatus('success');
+      clearErrors(); // Limpiar todos los errores
       reset(); // Limpiar el formulario
       
       // Resetear el mensaje de éxito después de 5 segundos
@@ -222,6 +225,12 @@ export function CTA() {
                       message: 'El nombre debe tener al menos 2 caracteres'
                     }
                   })}
+                  onChange={(e) => {
+                    register('name').onChange(e);
+                    if (errors.name && e.target.value.trim().length >= 2) {
+                      clearErrors('name');
+                    }
+                  }}
                 />
                 {errors.name && (
                   <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
@@ -244,6 +253,13 @@ export function CTA() {
                       message: 'Email inválido'
                     }
                   })}
+                  onChange={(e) => {
+                    register('email').onChange(e);
+                    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+                    if (errors.email && e.target.value && emailPattern.test(e.target.value)) {
+                      clearErrors('email');
+                    }
+                  }}
                 />
                 {errors.email && (
                   <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
@@ -279,6 +295,12 @@ export function CTA() {
                       message: 'La descripción debe tener al menos 10 caracteres'
                     }
                   })}
+                  onChange={(e) => {
+                    register('project').onChange(e);
+                    if (errors.project && e.target.value.trim().length >= 10) {
+                      clearErrors('project');
+                    }
+                  }}
                 />
                 {errors.project && (
                   <p className="text-red-500 text-xs mt-1">{errors.project.message}</p>
