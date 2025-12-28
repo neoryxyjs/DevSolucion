@@ -36,8 +36,24 @@ export function Footer() {
           <div>
             <h4 className="text-white mb-4">Contacto</h4>
             <ul className="space-y-2 text-gray-400">
-              <li>devsolutionchile@gmail.com</li>
-              <li>+569 4923 8082</li>
+              <li>
+                <a 
+                  href="mailto:devsolutionchile@gmail.com" 
+                  className="hover:text-cyan-400 transition-colors"
+                >
+                  devsolutionchile@gmail.com
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://wa.me/56949238082" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-cyan-400 transition-colors"
+                >
+                  +569 4923 8082
+                </a>
+              </li>
               <li>Santiago, Chile</li>
             </ul>
           </div>
