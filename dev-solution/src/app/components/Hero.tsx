@@ -6,23 +6,38 @@ export function Hero() {
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Ajustar para el navbar fijo
+      const offset = 80; // Altura del navbar
+      const elementPosition = section.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-cyan-950 to-slate-900">
-      {/* Animated background elements */}
+      {/* Animated background elements - Enhanced with more particles */}
       <div className="absolute inset-0 overflow-hidden">
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: 'linear-gradient(rgba(6, 182, 212, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(6, 182, 212, 0.1) 1px, transparent 1px)',
+          backgroundSize: '50px 50px'
+        }} />
+        
+        {/* Main animated orbs */}
         <motion.div
           className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500 rounded-full mix-blend-multiply filter blur-xl opacity-30"
           animate={{
-            scale: [1, 1.2, 1],
-            x: [0, 50, 0],
-            y: [0, 30, 0],
+            scale: [1, 1.3, 1.1, 1],
+            x: [0, 80, 40, 0],
+            y: [0, 50, 20, 0],
           }}
           transition={{
-            duration: 8,
+            duration: 15,
             repeat: Infinity,
             ease: "easeInOut"
           }}
@@ -30,12 +45,12 @@ export function Hero() {
         <motion.div
           className="absolute top-1/3 right-1/4 w-96 h-96 bg-orange-500 rounded-full mix-blend-multiply filter blur-xl opacity-25"
           animate={{
-            scale: [1, 1.3, 1],
-            x: [0, -50, 0],
-            y: [0, -30, 0],
+            scale: [1, 1.4, 1.2, 1],
+            x: [0, -70, -30, 0],
+            y: [0, -50, -20, 0],
           }}
           transition={{
-            duration: 10,
+            duration: 18,
             repeat: Infinity,
             ease: "easeInOut"
           }}
@@ -43,9 +58,24 @@ export function Hero() {
         <motion.div
           className="absolute bottom-1/4 left-1/2 w-96 h-96 bg-teal-500 rounded-full mix-blend-multiply filter blur-xl opacity-20"
           animate={{
-            scale: [1, 1.4, 1],
-            x: [0, 30, 0],
-            y: [0, -40, 0],
+            scale: [1, 1.5, 1.1, 1],
+            x: [0, 50, 20, 0],
+            y: [0, -60, -30, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        
+        {/* Additional smaller particles for depth */}
+        <motion.div
+          className="absolute top-1/2 right-1/3 w-64 h-64 bg-cyan-400 rounded-full mix-blend-multiply filter blur-2xl opacity-15"
+          animate={{
+            scale: [1, 1.2, 1],
+            x: [0, -40, 0],
+            y: [0, 40, 0],
           }}
           transition={{
             duration: 12,
@@ -53,6 +83,42 @@ export function Hero() {
             ease: "easeInOut"
           }}
         />
+        <motion.div
+          className="absolute bottom-1/3 left-1/3 w-72 h-72 bg-teal-400 rounded-full mix-blend-multiply filter blur-2xl opacity-15"
+          animate={{
+            scale: [1, 1.3, 1],
+            x: [0, 60, 0],
+            y: [0, -50, 0],
+          }}
+          transition={{
+            duration: 14,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        
+        {/* Floating particles */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-cyan-400 rounded-full opacity-20"
+            style={{
+              left: `${20 + i * 15}%`,
+              top: `${30 + i * 10}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.2, 0.4, 0.2],
+              scale: [1, 1.5, 1],
+            }}
+            transition={{
+              duration: 3 + i * 0.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.3,
+            }}
+          />
+        ))}
       </div>
 
       {/* Content */}

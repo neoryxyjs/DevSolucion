@@ -9,7 +9,7 @@ export function Navigation() {
   const navItems = [
     { label: 'Inicio', href: '#', id: '' },
     { label: 'Servicios', href: '#servicios', id: 'servicios' },
-    { label: 'Portafolio', href: '#portfolio', id: 'portafolio' },
+    { label: 'Portafolio', href: '#portfolio', id: 'portfolio' },
     { label: 'Contacto', href: '#contacto', id: 'contacto' },
   ];
 
